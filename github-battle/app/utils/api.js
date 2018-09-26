@@ -5,10 +5,10 @@ var sec = 'YOUR_SECREIT_ID';
 var params = '?client_id=' + id + '&client_secret=' + sec;
 
 function getProfile(username) {
-  axios
+  return axios
     .get('https://api.github.com/users/' + username + params)
     .then(function(user) {
-      return user.data;
+      return user['data'];
     });
 }
 
@@ -42,9 +42,9 @@ function handleError(error) {
 
 function getUserData(player) {
   return axios.all([getProfile(player), getRepos(player)]).then(function(data) {
+    console.log(data);
     var profile = data[0];
     var repos = data[1];
-
     return {
       profile: profile,
       score: calculateScore(profile, repos),
@@ -53,7 +53,7 @@ function getUserData(player) {
 }
 
 function sortPlayers(players) {
-  players.sort(function(a, b) {
+  return players.sort(function(a, b) {
     return b.score - a.score;
   });
 }
