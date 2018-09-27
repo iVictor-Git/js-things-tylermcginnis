@@ -2,7 +2,7 @@ const axios = require('axios');
 
 const id = 'YOUR_CLIENT_ID';
 const sec = 'YOUR_SECREIT_ID';
-const params = '?client_id=' + id + '&client_secret=' + sec;
+const params = `?client_id=${id}&client_secret= ${sec}`;
 
 const getProfile = username =>
   axios
@@ -11,7 +11,7 @@ const getProfile = username =>
 
 const getRepos = username =>
   axios.get(
-    `https://api.github.com/users/${username}/repos?${params}&per_page=100`,
+    `https://api.github.com/users/${username}/repos${params}&per_page=100`,
   );
 
 const getStarCount = repos =>
