@@ -1,4 +1,4 @@
-const axios = require('axios');
+import axios from 'axios';
 
 const id = 'YOUR_CLIENT_ID';
 const sec = 'YOUR_SECREIT_ID';
@@ -32,16 +32,16 @@ const getUserData = player =>
 
 const sortPlayers = players => players.sort((a, b) => b.score - a.score);
 
-module.exports = {
-  battle(players) {
-    return Promise.all(players.map(getUserData))
-      .then(sortPlayers)
-      .catch(handleError);
-  },
-  fetchPopularRepos(language) {
-    const encodedURI = window.encodeURI(
-      `https://api.github.com/search/repositories?q=stars:>1+language:${language}&sort=stars&order=desc&type=Repositories`,
-    );
-    return axios.get(encodedURI).then(({ data: { items } }) => items);
-  },
+const battle = players =>
+  Promise.all(players.map(getUserData))
+    .then(sortPlayers)
+    .catch(handleError);
+
+const fetchPopularRepos = languages => {
+  const encodedURI = window.encodeURI(
+    `https://api.github.com/search/repositories?q=stars:>1+language:${language}&sort=stars&order=desc&type=Repositories`,
+  );
+  return axios.get(encodedURI).then(({ data: { items } }) => items);
 };
+
+export { battle, fetchPopularRepos };
