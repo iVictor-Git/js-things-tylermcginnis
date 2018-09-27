@@ -34,8 +34,7 @@ const sortPlayers = players => players.sort((a, b) => b.score - a.score);
 
 module.exports = {
   battle(players) {
-    return axios
-      .all(players.map(getUserData))
+    return Promise.all(players.map(getUserData))
       .then(sortPlayers)
       .catch(handleError);
   },
