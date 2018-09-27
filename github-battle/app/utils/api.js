@@ -7,15 +7,15 @@ const params = `?client_id=${id}&client_secret= ${sec}`;
 const getProfile = username =>
   axios
     .get(`https://api.github.com/users/${username}${params}`)
-    .then(user => user.data);
+    .then(({ data }) => data);
 
 const getRepos = username =>
   axios.get(
     `https://api.github.com/users/${username}/repos${params}&per_page=100`,
   );
 
-const getStarCount = repos =>
-  repos.data.reduce((count, repo) => count + repo.stargazers_count, 0);
+const getStarCount = ({ data }) =>
+  data.reduce((count, { stargazers_count }) => count + stargazers_count, 0);
 
 const calculateScore = ({ followers }, repos) => {
   const totalStars = getStarCount(repos);
