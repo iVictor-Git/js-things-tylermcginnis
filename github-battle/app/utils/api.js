@@ -6,7 +6,7 @@ const params = `?client_id=${id}&client_secret= ${sec}`;
 
 const getProfile = username =>
   axios
-    .get(`https://api.github.com/users/${username} ${params}`)
+    .get(`https://api.github.com/users/${username}${params}`)
     .then(user => user.data);
 
 const getRepos = username =>
