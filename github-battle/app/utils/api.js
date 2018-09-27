@@ -17,11 +17,8 @@ const getRepos = username =>
 const getStarCount = ({ data }) =>
   data.reduce((count, { stargazers_count }) => count + stargazers_count, 0);
 
-const calculateScore = ({ followers }, repos) => {
-  const totalStars = getStarCount(repos);
-
-  return followers * 3 + totalStars;
-};
+const calculateScore = ({ followers }, repos) =>
+  followers * 3 + getStarCount(repos);
 
 const handleError = error => console.warn(error) || null;
 
