@@ -23,12 +23,12 @@ const calculateScore = ({ followers }, repos) =>
 const handleError = error => console.warn(error) || null;
 
 const getUserData = player =>
-  axios
-    .all([getProfile(player), getRepos(player)])
-    .then(([profile, repos]) => ({
+  Promise.all([getProfile(player), getRepos(player)]).then(
+    ([profile, repos]) => ({
       profile,
       score: calculateScore(profile, repos),
-    }));
+    }),
+  );
 
 const sortPlayers = players => players.sort((a, b) => b.score - a.score);
 
