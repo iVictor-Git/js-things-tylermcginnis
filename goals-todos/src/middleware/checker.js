@@ -1,7 +1,7 @@
 import { ADD_TODO } from '../actions/todos';
 import { ADD_GOAL } from '../actions/goals';
 
-export default (checker = store => next => action => {
+export default store => next => action => {
   if (
     (action.type === ADD_TODO || action.type === ADD_GOAL) &&
     action.todo.name.toLowerCase().indexOf('bitcoin') !== -1
@@ -9,4 +9,4 @@ export default (checker = store => next => action => {
     return alert("Nope. That's a bad idea.");
 
   return next(action);
-});
+};
