@@ -4,10 +4,12 @@ const id = 'YOUR_CLIENT_ID';
 const sec = 'YOUR_SECREIT_ID';
 const params = `?client_id=${id}&client_secret= ${sec}`;
 
-const getProfile = username =>
-  axios
-    .get(`https://api.github.com/users/${username}${params}`)
-    .then(({ data }) => data);
+const getProfile = async username => {
+  const { data } = await axios.get(
+    `https://api.github.com/users/${username}${params}`,
+  );
+  return data;
+};
 
 const getRepos = username =>
   axios.get(
@@ -22,26 +24,35 @@ const calculateScore = ({ followers }, repos) =>
 
 const handleError = error => console.warn(error) || null;
 
-const getUserData = player =>
-  Promise.all([getProfile(player), getRepos(player)]).then(
-    ([profile, repos]) => ({
-      profile,
-      score: calculateScore(profile, repos),
-    }),
-  );
+const getUserData = async player => {
+  const [profile, repos] = await Promise.all([
+    getProfile(player),
+    getRepos(player),
+  ]);
+  return {
+    profile,
+    score: calculateScore(profile, repos),
+  };
+};
 
 const sortPlayers = players => players.sort((a, b) => b.score - a.score);
 
-const battle = players =>
-  Promise.all(players.map(getUserData))
-    .then(sortPlayers)
-    .catch(handleError);
+const battle = async players => {
+  const results = await Promise.all(players.map(getUserData)).catch(
+    handleError,
+  );
+  return results === null ? results : sortPlayers(results);
+};
 
-const fetchPopularRepos = language => {
+const fetchPopularRepos = async language => {
   const encodedURI = window.encodeURI(
     `https://api.github.com/search/repositories?q=stars:>1+language:${language}&sort=stars&order=desc&type=Repositories`,
   );
-  return axios.get(encodedURI).then(({ data: { items } }) => items);
+
+  const {
+    data: { items },
+  } = await axios.get(encodedURI).catch(handleError);
+  return items;
 };
 
 export { battle, fetchPopularRepos };
