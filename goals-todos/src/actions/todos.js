@@ -1,4 +1,4 @@
-import API, { deleteTodo } from 'goals-todos-api';
+import { deleteTodo, saveTodo, saveTodoToggle } from 'goals-todos-api';
 
 export const ADD_TODO = 'ADD_TODO';
 export const REMOVE_TODO = 'REMOVE_TODO';
@@ -20,18 +20,18 @@ const toggleTodo = id => ({
 });
 
 export const handleAddTodo = (name, callback) => dispatch =>
-  API.saveTodo(name)
+  saveTodo(name)
     .then(todo => dispatch(addTodo(todo)) || callback())
     .catch(() => alert('There was an error. Try again.'));
 
 export const handleDeleteTodo = todo => dispatch =>
   dispatch(removeTodo(todo.id)) ||
-  API.deleteTodo(todo.id).catch(
+  deleteTodo(todo.id).catch(
     () => dispatch(addTodo(todo)) || alert('An error occured. Try again.'),
   );
 
 export const handleToggle = id => dispatch =>
   dispatch(toggleTodo(id)) ||
-  API.saveTodoToggle(id).catch(() =>
+  saveTodoToggle(id).catch(() =>
     dispatch(toggleTodo(id) || alert('An error occurred. Try again')),
   );

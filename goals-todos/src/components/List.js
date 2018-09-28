@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default (list = { items, toggle, remove }(
+export default ({ items, toggle, remove }) => (
   <ul>
     {items.map(item => (
       <li key={item.id}>
@@ -9,7 +9,8 @@ export default (list = { items, toggle, remove }(
           style={{ textDecoration: item.complete ? 'line-through' : 'none' }}>
           {item.name}
         </span>
+        <button onClick={() => remove(item)}>X</button>
       </li>
     ))}
-  </ul>,
-));
+  </ul>
+);
