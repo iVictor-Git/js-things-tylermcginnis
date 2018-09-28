@@ -1,23 +1,23 @@
-import axios from 'axios';
-
 const id = 'YOUR_CLIENT_ID';
 const sec = 'YOUR_SECREIT_ID';
 const params = `?client_id=${id}&client_secret= ${sec}`;
 
 const getProfile = async username => {
-  const { data } = await axios.get(
+  const response = await fetch(
     `https://api.github.com/users/${username}${params}`,
   );
-  return data;
+  return response.json();
 };
 
-const getRepos = username =>
-  axios.get(
+const getRepos = async username => {
+  const response = await fetch(
     `https://api.github.com/users/${username}/repos${params}&per_page=100`,
   );
+  return response.json();
+};
 
-const getStarCount = ({ data }) =>
-  data.reduce((count, { stargazers_count }) => count + stargazers_count, 0);
+const getStarCount = repos =>
+  repos.reduce((count, { stargazers_count }) => count + stargazers_count, 0);
 
 const calculateScore = ({ followers }, repos) =>
   followers * 3 + getStarCount(repos);
@@ -49,9 +49,8 @@ const fetchPopularRepos = async language => {
     `https://api.github.com/search/repositories?q=stars:>1+language:${language}&sort=stars&order=desc&type=Repositories`,
   );
 
-  const {
-    data: { items },
-  } = await axios.get(encodedURI).catch(handleError);
+  const response = await fetch(encodedURI).catch(handleError);
+  const { items } = await response.json();
   return items;
 };
 
