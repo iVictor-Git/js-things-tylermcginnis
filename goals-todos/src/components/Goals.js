@@ -26,7 +26,7 @@ class Goals extends Component {
           placeholder="Add Goal"
           ref={input => (this.input = input)}
         />
-        <button onclick={this.addItem}>Add Goal</button>
+        <button onClick={this.addItem}>Add Goal</button>
         <List items={this.props.goals} remove={this.removeItem} />
       </div>
     );
