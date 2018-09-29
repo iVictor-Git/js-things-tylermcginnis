@@ -13,13 +13,14 @@ const removeGoal = id => ({
   id,
 });
 
-export const handleAddGoal = (name, callback) => dispatch =>
+export const handleAddGoal = (name, callback) => dispatch => {
   API.saveGoal(name)
     .then(goal => {
       dispatch(addGoal(goal));
       callback();
     })
     .catch(() => alert('There was an error. Try again.'));
+};
 
 export const handleDeleteGoal = goal => dispatch =>
   dispatch(removeGoal(goal.id)) ||
