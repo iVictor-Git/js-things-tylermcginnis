@@ -15,13 +15,16 @@ const removeTodo = id => ({
 });
 
 const toggleTodo = id => ({
-  type: toggleTodo,
+  type: TOGGLE_TODO,
   id,
 });
 
 export const handleAddTodo = (name, callback) => dispatch =>
   saveTodo(name)
-    .then(todo => dispatch(addTodo(todo)) || callback())
+    .then(todo => {
+      dispatch(addTodo(todo));
+      callback();
+    })
     .catch(() => alert('There was an error. Try again.'));
 
 export const handleDeleteTodo = todo => dispatch =>
